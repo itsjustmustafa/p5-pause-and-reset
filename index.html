@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en">
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+		<script src="sketch.js"></script>
+		<script src="woohoo.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://itsjustmustafa.github.io/assets/css/style.css">
+		<meta charset="utf-8">
+
+		<style>
+			li.L0, li.L1, li.L2, li.L3,
+			li.L5, li.L6, li.L7, li.L8 {
+			  list-style-type: decimal !important;
+			}
+			
+			p5 .pln{
+				font-weight: bold;
+				color: #222299;
+			}
+			p5{
+				font-weight: bold;
+				color: #222299;
+			}
+			
+			code{
+				font-weight: bold;
+			}
+			
+			pre {
+				-moz-tab-size:    4; /* Firefox 4+ */
+				-o-tab-size:      4; /* Opera 11.5 & 12.1 only */
+				tab-size:         4; /* Chrome 21+, Safari 6.1+, Opera 15+ */
+			}
+			pre {
+				font-size: 14px;
+			}
+		</style>
+	
+	</head>
+	<body style="display: flex; align-items: center; justify-content: center; flex-direction:row; margin: 10px">
+	
+	<!--<div style="order:0; width:10%; display:flex; align-items: flex-start; flex-direction: row"> 
+		<p> Side bar </p>
+	</div> --> 
+  
+	<div class="main content" style="order:0; width: 90%; display:flex; align-items: center; flex-direction:column">
+		<h1 style="order:0"> <i>Pause and Reset buttons in p5.js sketches</i> </h1>
+		<br/>
+		<div style="order:1">
+			<div id="sketchDiv" style="padding:10px"></div>
+			<button id="pauseButton" onclick="pauseButtonToggle(this, mysketch)" style="width: 75px; font-size:12px">
+					  Pause
+					</button>
+			
+			<button id="resetButton" onclick="mysketch.initialiseSketch();" style="width: 75px; font-size:12px">
+					  Reset
+					</button>
+	  
+		</div>
+		
+		<h2 style="order:2"> Pretty cool right? Here's how you do it:</h2>
+		<div style="order:3; width:85%"> <!-- Chapters Div -->
+		<h3 id="chpt0" >0. Starting out with a simple script</h3>
+		
+		<div style="display:flex; align-items:center; flex-wrap: wrap"> <!-- Code + Explain Div -->
+		<div style="order: 0; flex-grow: 1; flex-basis: 50%; display:block; padding: 10px"> <!-- Explain Div -->
+		
+		<p> Lets begin with a simple p5 sketch. <br>
+		
+		A pretty standard p5.js sketch, it's the <a href="#sketchDiv">example above</a>
+		but without the pause and reset buttons, all it does is: </p>
+		<ul>
+		<li> move a circle across the screen, </li>
+		<li> move it up and down according to a sine wave, </li>
+		<li> and draw the background with 10 alpha, so a slight trace of the circle remains</li>
+		</ul>
+		<p> <strong>If you add this script to a html page, you get something like <a href="simple_sketch.html" target="_blank" rel="noopener noreferrer">this</a>. </strong><br>
+		You would have minimal control over where your script is in your document, and you can't really pause the sketch or reset it (without reloading the entire page). <br><br>
+		So how do you fix this?
+		</div> <!-- Explain Div -->
+		<div style="order:1; flex-grow: 1; flex-basis: 50%"> <!-- Code Div -->
+		<pre class="prettyprint linenums:1" style="width:100%">// A simple p5.js script
+// Just a ball moving across the canvas
+let ballX = 0;
+let ballSpeed = 1;
+
+function <p5>setup</p5>() {
+	// put setup code here
+	<p5>createCanvas</p5>(240, 120);
+	<p5>background</p5>(51);
+}
+  
+function <p5>draw</p5>() {
+	// put drawing code here
+	<p5>background</p5>(51,10);
+	<p5>stroke</p5>(255);
+	<p5>strokeWeight</p5>(10);
+	<p5>translate</p5>(0, <p5>height</p5>/2);
+	let ang = 2*<p5>PI</p5>*(ballX/<p5>width</p5>);
+	let ballY = <p5>sin</p5>(ang) * <p5>height</p5>/2.5;
+	<p5>circle</p5>(ballX, ballY, 10);
+	ballX = (ballX + ballSpeed) % <p5>width</p5>;
+}</pre>
+	<p>The sketch <a href="simple_script.js" target="_blank" rel="noopener noreferrer"><code>simple_script.js</code></a></p>
+	</div> <!-- Code Div -->
+	</div> <!-- Code + Explain Div -->
+	
+	<h3 id="chpt1">1. Namespacing your script</h3>
+	
+	<div style="display:flex; align-items:center; flex-wrap: wrap"> <!-- Code + Explain Div -->
+	<div style="order:0; flex-grow: 1; flex-basis: 35%"> <!-- Code Div -->
+
+<pre class="prettyprint linenums:1" style="width:100%">// A namespaced p5.js script
+function ballMovingSketch(p){
+	let ballX = 0;
+	let ballSpeed = 1;
+
+	p.<p5>setup</p5> = function() {
+		// put setup code here
+		p.<p5>createCanvas</p5>(240, 120);
+		p.<p5>background</p5>(51);
+	}
+	  
+	p.<p5>draw</p5> = function() {
+		// put drawing code here
+		p.<p5>background</p5>(51,10);
+		...</pre>
+	<p>The sketch, now namespaced! Find it here: <a href="namespaced_simple_script.js" target="_blank" rel="noopener noreferrer"><code>namespaced_simple_script.js</code></a></p>
+	</div> <!-- Code Div -->
+	
+	<div style="order: 1; flex-grow: 1; flex-basis: 60%; display:block; padding: 10px"> <!-- Explain Div -->
+	<p>
+	To namespace our sketch, we want to wrap everything in a function, with an argument of a p5Canvas object <code>p</code>.<br>
+	We won't need to run this function, p5.js will handle that for us, we just need to worry about the namespacing. <br> <br>
+	
+	If you notice in the code above in <a href="#chpt0">Chapter 0 </a>, keywords and functions from p5.js were highlighted as such: <br>
+	<code> <p5>draw</p5>, <p5>background</p5>(...), <p5>stroke</p5>(...) </code> <br> <br>
+	These terms are all linked to the canvas, so when we want to namespace according to the p5Canvas object <code>p</code>,
+	we will need to namespace all of these terms by simply adding a <br><code>p.&ltterm&gt </code> for each term, so the example above will be <br>
+	<code> p.<p5>draw</p5>, p.<p5>background</p5>(...), p.<p5>stroke</p5>(...) </code> <br> <br>
+	
+	</p>
+	</div> <!-- Explain Div -->
+	
+	<div style="order: 2; flex-grow: 1; flex-basis: 100%; display:block; padding: 10px"> <!-- Another Explain Div -->
+	Finally, since the sketch is now entirely contained within the function <code>ballMovingSketch(p)</code>,
+	we need to actually add the sketch to the page. All we need is the following line after writing the function:<br>
+	<pre class="prettyprint linenums:24" style="width:100%">let mysketch = new <p5>p5</p5>(ballMovingSketch, 'sketchDiv');</pre> <br>
+	
+	<p>This will add a p5Cavas (<code>mysketch</code>) running the sketch from the function <code>ballMovingSketch</code> to the element with the id <code>sketchDiv</code>.
+	I prefer to place sketches in divs but they can be placed wherever.<br>
+	With such namespacing, you can achieve pages that give you control over how the sketch is displayed in your document, and even how many times it's displayed,
+	like <a href="namespaced_simple_sketch.html" target="_blank" rel="noopener noreferrer">this very basic example</a>.<br>
+	If your sketch doesn't need interactivity, something like generative art in the background,
+	or a sketch without a draw function that only uses dom elements, you only really needs this modular function wrapping to achieve your goals.<br><br>
+	But if we want to pause and reset the sketch, we're gonna need to add a few more things. </p>
+	</div> <!-- Another Explain Div -->
+	</div> <!-- Code + Explain Div -->
+	
+	<h3 id="chpt2">2. Adding a Reset button</h3>
+	<div style="display:flex; align-items:center; flex-wrap: wrap"> <!-- Code + Explain Div -->
+	
+	<div style="order: 0; flex-grow: 1; flex-basis: 100%; display:block; padding: 10px"> <!-- Explain Div -->
+	<p>
+	Resetting a sketch can mean many different things, like simply blanking the canvas by splashing it with its background colour,
+	or setting the sketch as though the entire page was just refreshed, or somewhere in between.<br><br>
+	<a href="https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw" target="_blank" rel="noopener noreferrer">Dan Shiffman of the Coding Train</a> has a great video on
+	<a href="https://www.youtube.com/watch?v=lm8Y8TD4CTM" target="_blank" rel="noopener noreferrer">implementing a simple reset button for a p5 sketch</a>.<br>
+	It's a great tutorial if your page is just a standalone p5 sketch, however our implementation shall be slightly different,
+	since we don't necessarily want the button to be attatched to the sketch itself, and we want to use our function namespacing for greater control of our sketch.<br><br>
+	Here's how we do that.
+	</p>
+	</div> <!-- Explain Div -->
+	<div style="order: 2; flex-grow: 1; flex-basis: 40%; display:block; padding: 10px"> <!-- Explain Div -->
+	We can create a method that (re)initialises the sketch. For this example that means (re)setting initial values for our two variables,
+	and drawing the background. <br><br>
+	Let's call that method <code>p.initialiseSketch</code>, importantly with the namespacing, since we
+	will want to call this externally when we reset the sketch.<br><br>
+	Then our entire <code>setup</code> function should just be creating the canvas, and then calling this initialising method.<br>
+	If there are additional dom elements declared in the sketch in <code>setup</code>, those declaraions should stay in <code>setup</code>, since calling it
+	during a reset would duplicate those elements. That is also why we shouldn't call <code>setup</code> or <code>p.createCanvas</code>
+	in our reset method, since that would call <code>p.createCanvas</code> again, which could be unsafe.
+	</div> <!-- Explain Div -->
+	
+	<div style="order:3; flex-grow: 1; flex-basis: 60%"> <!-- Code Div -->
+<pre class="prettyprint linenums:1" style="width:100%">// The sketch is wrapped in a function
+function ballMovingSketch(p){
+  
+	// Sketch variables, uninitalised
+	let ballX;
+	let ballSpeed;
+  
+	// This defines the initial state of the sketch,
+	// like variable initalisation and canvas actions
+	p.initialiseSketch = function(){
+		ballX = 0;
+		ballSpeed = 1;
+		p.<p5>background</p5>(51);
+	}
+
+	// We only need to create the canvas here,
+	// everything else goes in initaliseSketch
+	p.<p5>setup</p5> = function() {
+		// put setup code here
+		p.<p5>createCanvas</p5>(240, 120);
+		p.initialiseSketch();
+	}</pre>
+	</div> <!-- Code Div -->
+	
+	<div style="order: 4; flex-grow: 1; flex-basis: 40%; display:block; padding: 10px"> <!-- Explain Div -->
+	Now we simply add a button in our HTML document that calls this reset method on an event.
+	In our example we used a button's <code>onclick</code> event, but this can be any event.
+	</div> <!-- Explain Div -->
+	
+	<div style="order:5; flex-grow: 1; flex-basis: 60%"> <!-- Code Div -->
+	<pre class="prettyprint" style="width:100%">&lt!-- within index.html --&gt
+&ltbutton
+	id="resetButton" onclick="mysketch.initialiseSketch();"
+	style="width: 75px; font-size:12px"&gt
+		Reset
+&lt/button&gt</pre>
+	</div> <!-- Code Div -->
+	</div> <!-- Code + Explain Div -->
+	<p>And bam we have a reset button!</p>
+	
+	<h3 id="chpt3">3. Adding a Pause button</h3>
+	<div style="display:flex; align-items:center; flex-wrap: wrap"> <!-- Code + Explain Div -->
+	
+	<div style="order: 0; flex-grow: 1; flex-basis: 100%; display:block; padding: 10px"> <!-- Explain Div -->
+	<p>
+	We're gonna take the main ideas from our reset button implementation to create our pause button,
+	with a few extra bits thrown in.
+	</p>
+	</div> <!-- Explain Div -->
+	
+	<div style="order:1; flex-grow: 1; flex-basis: 40%"> <!-- Code Div -->
+
+<pre class="prettyprint linenums:24" style="width:100%">	// Flag to pause the sketch
+	let paused = false;
+	// Function to read the pause flag externally
+	p.isPaused = function(){
+		return paused
+	}
+  
+	// This simply toggles the pause flag
+	// used to control the sketch's pause state
+	p.pauseToggle = function(){
+		paused = !paused;
+	}</pre>
+ <pre class="prettyprint linenums:37" style="width:100%">	p.draw = function() {
+		// If pause flag is true, do nothing in draw
+		if(paused){
+			return;
+		}
+		// put drawing code here
+    ...</pre>
+	</div> <!-- Code Div -->
+	
+	<div style="order: 2; flex-grow: 1; flex-basis: 40%; display:block; padding: 10px"> <!-- Explain Div -->
+	<p>
+	Within our <code>ballMovingSketch</code> function, we add a flag <code>paused</code>, initially set to false 
+	since we want the sketch to start unpaused (there are  many cases where a sketch would instead be paused from the start).<br>
+	We want to limit external control over the value of this flag, so we create two functions, a getter <code>p.isPaused</code>, 
+	which simply returns the flag, and a toggle <code>p.pauseToggle</code>, which switches the flag between <code>true</code> and <code>false</code>
+	for our p5Canvas object <code>p</code>. <br>
+	This will allow the flag to be controlled from outside the sketch function, in a controlled way.<br><br>
+	In the <code>draw</code> method, if the <code>pause</code> flag is set to <code>true</code>, do not proceed with the method.
+	There are many ways this can be implemented, our method has <code>draw</code> continuously being called even when paused. There may be a way to
+	have the <code>draw</code> method only be called while the sketch is not paused, but for the most part this is fine as is.
+	</p>
+	</div> <!-- Explain Div -->
+	
+	<div style="order:3; flex-grow: 1; flex-basis: 40%"> <!-- Code Div -->
+	<pre class="prettyprint linenums:55" style="width:100%">// This pauses a given sketch from a button press
+let pauseButtonToggle = function(button, sketch){
+  if(sketch.isPaused()){
+    button.innerText = "Pause";
+  }else{
+    button.innerText = "Play";
+  }
+  sketch.pauseToggle();
+}</pre>
+	<pre class="prettyprint" style="width:100%">&ltbutton id="pauseButton"
+	onclick="pauseButtonToggle(this, mysketch)" 
+	style="width: 75px; font-size:12px"&gt
+		Pause
+&lt/button&gt </pre>
+	</div> <!-- Code Div -->
+	<div style="order: 4; flex-grow: 1; flex-basis: 40%; display:block; padding: 10px"> <!-- Explain Div -->
+	<p>
+	Outside of the sketch's function, we add a method to pause via buttons <code>pauseButtonToggle(button, sketch)</code>, which,
+	given the button pressed and the sketch to (un)pause, relabels the button and toggles the <code>pause</code> flag in the sketch.<br><br>
+	We can then assign this to a button's <code>onclick</code> event, with the argument for the button being <code>this</code> to refer
+	to the button itself, and we're done! <br><br>A more simple type of button could also have <code>onclick="mysketch.pauseToggle()"</code>.
+	This wouldn't change the looks of the button, but it would function the same otherwise.
+	</p>
+	</div> <!-- Explain Div -->
+	</div>  <!-- Code + Explain Div -->
+	</div> <!-- Chapters Div -->
+	<p style="order:4">And that's it! You're done!</p>
+	<div style="order:4">
+			<button id="woohooPauseButton" onclick="pauseButtonToggle(this, mywoohooSketch)" style="width: 75px; font-size:12px">
+					  Play
+					</button>
+			
+			<button id="resetButton" onclick="mywoohooSketch.initialiseSketch();" style="width: 75px; font-size:12px">
+					  Reset
+					</button>
+			<div id="woohooDiv" style="padding:10px"></div>
+		</div>
+	
+</body></html>

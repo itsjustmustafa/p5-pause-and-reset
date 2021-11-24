@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://itsjustmustafa.github.io/assets/css/style.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body style="margin:10px">
+	<h1> Hey y'all check out my cool sketches! </h1>
+    <script src="namespaced_simple_script.js"></script>
+	
+	<div id="sketchDiv1">
+	<p> This is my first one, pretty proud of it: </p>
+	</div>
+	<br>
+	<div id="sketchDiv2">
+	<p> This is my second one, its the exact same one as above, but still, enjoy it!: </p>
+	</div>
+	
+	
+	
+	<div style="display: flex; justify-content: space-around">
+	<p style="order:0; flex-basis:25%"> This one I added using inline JavaScript! </p>
+	
+	<div style = "order:1; flex-basis:25%">
+		<script> let mysketch3 = new p5(ballMovingSketch, 'sketchDiv3'); </script>
+		<div id="sketchDiv3"> This div has <code>id="sketchDiv3"</code></div>
+	</div>
+	
+	<p style="order:2; flex-basis:50%"> I used <br> <code style="font-size: 12px"> &ltscript&gt let mysketch3 = new p5(ballMovingSketch, 'sketchDiv3'); &lt/script&gt </code></p>
+	</div>
+  </body>
+</html>
